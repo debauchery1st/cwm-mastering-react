@@ -31,6 +31,14 @@ function App() {
     });
     setCounters(incremented);
   };
+  const handleDecrement = counterId => {
+    const cloned = [...counters];
+    const decremented = cloned.map(c => {
+      if (c.id === counterId) c.value--;
+      return c;
+    });
+    setCounters(decremented);
+  };
   return (
     <React.Fragment>
       <NavBar totalCounters={counters.filter(c => c.value > 0).length} />
@@ -40,6 +48,7 @@ function App() {
           onReset={handleReset}
           onDelete={handleDelete}
           onIncrement={handleIncrement}
+          onDecrement={handleDecrement}
         />
       </main>
     </React.Fragment>
