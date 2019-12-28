@@ -10,6 +10,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedGroup, setSelectedGroup] = useState("");
   const [appInit, setAppInit] = useState(false);
+  const [sortColumn, setSortColumn] = useState({ path: "title", order: "asc" });
 
   useEffect(() => {
     if (!appInit) {
@@ -45,12 +46,26 @@ function App() {
     setCurrentPage(1);
   };
 
+  const handleSort = path => {
+    const orders = ["asc", "desc"];
+    const cloned = { ...sortColumn };
+    const idx =
+      path === cloned.path
+        ? (orders.indexOf(cloned.order) + 1) % 2
+        : orders.indexOf(cloned.order);
+    cloned.path = path;
+    cloned.order = orders[idx];
+    setSortColumn(cloned);
+  };
+
   return (
     <main className="container">
       <Movies
         movieList={movies}
         genreList={genres}
+        sortColumn={sortColumn}
         onDelete={handleDelete}
+        onSort={handleSort}
         likeMovie={handleLike}
         currentPage={currentPage}
         onPageChange={handlePageChange}

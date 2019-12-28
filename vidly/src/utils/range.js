@@ -1,7 +1,7 @@
 const range = (start, end, step) => {
   // returns an array of numbers [start ... end]
   const result = [];
-  if (start) {
+  if (start >= 0) {
     if (!end) {
       end = start;
       start = 1;
