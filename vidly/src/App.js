@@ -17,7 +17,7 @@ function App() {
       console.log("App loaded.");
       setMovies(getMovies());
       console.log("getMovies()=> ok");
-      setGenres(getGenres());
+      setGenres([{ name: "All Genres", _id: "" }, ...getGenres()]);
       console.log("getGenres()=> ok");
     }
   }, [appInit]);
@@ -39,7 +39,9 @@ function App() {
   };
 
   const handleGenreSelect = genre => {
-    setSelectedGroup(genre);
+    genre.name === "All Genres" && genre._id.length === 0
+      ? setSelectedGroup("")
+      : setSelectedGroup(genre.name);
     setCurrentPage(1);
   };
 
