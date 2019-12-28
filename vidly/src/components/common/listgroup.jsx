@@ -1,7 +1,7 @@
 import React from "react";
 
 const ListGroup = props => {
-  const { title, group, onSelect, selectedGroup } = props;
+  const { title, group, onSelect, selectedGroup, textProp, keyProp } = props;
   const classes = "list-group-item";
   const groupMembers = [...group];
   return (
@@ -13,17 +13,24 @@ const ListGroup = props => {
       >
         {title}
       </li>
-      {groupMembers.map(key => (
+      {groupMembers.map(gm => (
         <li
-          key={key}
-          className={selectedGroup === key ? `${classes} active` : classes}
-          onClick={() => onSelect(key)}
+          key={gm[keyProp]}
+          className={
+            selectedGroup === gm[textProp] ? `${classes} active` : classes
+          }
+          onClick={() => onSelect(gm[textProp])}
         >
-          {key}
+          {gm[textProp]}
         </li>
       ))}
     </ul>
   );
+};
+
+ListGroup.defaultProps = {
+  textProp: "name",
+  keyProp: "_id"
 };
 
 export default ListGroup;

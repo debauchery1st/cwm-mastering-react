@@ -7,6 +7,7 @@ import paginate from "../utils/paginate";
 const Movies = props => {
   const {
     movieList,
+    genreList,
     onDelete,
     likeMovie,
     onPageChange,
@@ -16,7 +17,7 @@ const Movies = props => {
   } = props;
   const pageSize = 4;
   const count = movieList.length;
-  const genres = new Set(movieList.map(mv => mv.genre.name));
+  // const genres = new Set(movieList.map(mv => mv.genre.name));
 
   const filterByGenre = () =>
     !selectedGroup
@@ -27,17 +28,18 @@ const Movies = props => {
     return <p>There are no movies in the database.</p>;
   }
   const movies = paginate(filterByGenre(), currentPage, pageSize);
-  // const handlePageChange = page => console.log("page change", page);
   return (
     <React.Fragment>
-      <div style={{ display: "flex", flexFlow: "row" }}>
-        <ListGroup
-          title="Genres"
-          group={genres}
-          onSelect={onGenreSelect}
-          selectedGroup={selectedGroup}
-        />
-        <div className="container">
+      <div className="row">
+        <div className="col-2">
+          <ListGroup
+            title="All Genres"
+            group={genreList}
+            onSelect={onGenreSelect}
+            selectedGroup={selectedGroup}
+          />
+        </div>
+        <div className="col">
           <p>Showing {count} movies in the database.</p>
           <table className="table">
             <thead>
