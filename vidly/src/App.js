@@ -6,6 +6,8 @@ import "./App.css";
 function App() {
   const [movies, setMovies] = useState(getMovies());
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedGroup, setSelectedGroup] = useState("");
+
   const handleDelete = movieID => {
     const cloneFilter = movies.filter(m => m._id !== movieID);
     setMovies(cloneFilter);
@@ -23,6 +25,12 @@ function App() {
     console.log("set the current page to ", page);
   };
 
+  const handleGenreSelect = genre => {
+    console.log(`selected ${genre}`);
+    setSelectedGroup(genre);
+    setCurrentPage(1);
+  };
+
   return (
     <main className="container">
       <Movies
@@ -31,6 +39,8 @@ function App() {
         likeMovie={handleLike}
         currentPage={currentPage}
         onPageChange={handlePageChange}
+        onGenreSelect={handleGenreSelect}
+        selectedGroup={selectedGroup}
       />
     </main>
   );
