@@ -16,18 +16,15 @@ const Movies = props => {
     selectedGroup
   } = props;
   const pageSize = 4;
-  const count = movieList.length;
-  // const genres = new Set(movieList.map(mv => mv.genre.name));
-
   const filterByGenre = () =>
     !selectedGroup
       ? movieList
       : movieList.filter(m => m.genre.name === selectedGroup);
-
-  if (count === 0) {
+  const filtered = filterByGenre();
+  if (movieList.length === 0) {
     return <p>There are no movies in the database.</p>;
   }
-  const movies = paginate(filterByGenre(), currentPage, pageSize);
+  const movies = paginate(filtered, currentPage, pageSize);
   return (
     <React.Fragment>
       <div className="row">
@@ -40,7 +37,7 @@ const Movies = props => {
           />
         </div>
         <div className="col">
-          <p>Showing {count} movies in the database.</p>
+          <p>Showing {filtered.length} movies in the database.</p>
           <table className="table">
             <thead>
               <tr>
@@ -79,7 +76,7 @@ const Movies = props => {
             </tbody>
           </table>
           <Pagination
-            itemsCount={!selectedGroup ? count : movies.length}
+            itemsCount={!selectedGroup ? filtered.length : movies.length}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={onPageChange}
