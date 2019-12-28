@@ -5,7 +5,7 @@ import "./App.css";
 
 function App() {
   const [movies, setMovies] = useState(getMovies());
-
+  const [currentPage, setCurrentPage] = useState(1);
   const handleDelete = movieID => {
     const cloneFilter = movies.filter(m => m._id !== movieID);
     setMovies(cloneFilter);
@@ -18,12 +18,19 @@ function App() {
     setMovies(cloned);
   };
 
+  const handlePageChange = page => {
+    setCurrentPage(page);
+    console.log("set the current page to ", page);
+  };
+
   return (
     <main className="container">
       <Movies
         movieList={movies}
         onDelete={handleDelete}
         likeMovie={handleLike}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
       />
     </main>
   );

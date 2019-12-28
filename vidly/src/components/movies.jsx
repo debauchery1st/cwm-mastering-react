@@ -1,13 +1,18 @@
 import React from "react";
 import Like from "./common/liked";
+import Pagination from "./common/pagination";
+import paginate from "../utils/paginate";
 
 const Movies = props => {
-  const { movieList: movies, onDelete, likeMovie } = props;
-  const count = movies.length;
+  const { movieList, onDelete, likeMovie, onPageChange, currentPage } = props;
+  const pageSize = 4;
+  const count = movieList.length;
   if (count === 0) {
     return <p>There are no movies in the database.</p>;
   }
-  // debugger;
+  const movies = paginate(movieList, currentPage, pageSize);
+
+  // const handlePageChange = page => console.log("page change", page);
   return (
     <React.Fragment>
       <p>Showing {count} movies in the database.</p>
@@ -48,6 +53,12 @@ const Movies = props => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        itemsCount={count}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
     </React.Fragment>
   );
 };
