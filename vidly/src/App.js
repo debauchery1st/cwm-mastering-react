@@ -46,14 +46,14 @@ function App() {
     setCurrentPage(1);
   };
 
-  const handleSort = path => {
-    const orders = ["asc", "desc"];
+  const handleSort = newSortCol => {
     const cloned = { ...sortColumn };
+    const orders = ["asc", "desc"];
     const idx =
-      path === cloned.path
+      newSortCol.path === cloned.path
         ? (orders.indexOf(cloned.order) + 1) % 2
         : orders.indexOf(cloned.order);
-    cloned.path = path;
+    cloned.path = newSortCol.path;
     cloned.order = orders[idx];
     setSortColumn(cloned);
   };

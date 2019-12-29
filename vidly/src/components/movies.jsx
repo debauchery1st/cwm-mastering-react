@@ -31,7 +31,7 @@ const Movies = props => {
       : movieList.filter(m => m.genre.name === selectedGroup);
   const filtered = filterByGenre();
 
-  const sorted = sortedThat(filtered, sortColumn.path, sortColumn.order);
+  const sorted = sortedThat(filtered, sortColumn);
 
   const movies = paginate(sorted, currentPage, pageSize);
   return (
