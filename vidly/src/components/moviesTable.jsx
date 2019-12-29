@@ -1,11 +1,16 @@
 import React from "react";
 import Table from "./common/table";
 import Like from "./common/liked";
+import { Link } from "react-router-dom";
 
 const MoviesTable = props => {
   const { movies, onDelete, onLike, onSort, sortColumn } = props;
   const columns = [
-    { path: "title", label: "Title" },
+    {
+      path: "title",
+      label: "Title",
+      content: movie => <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+    },
     { path: "genre.name", label: "Genre" },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
