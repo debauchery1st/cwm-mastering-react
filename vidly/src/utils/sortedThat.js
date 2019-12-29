@@ -6,7 +6,7 @@
 const sortedThat = (arr, sortColumn, cast = String) =>
   arr.sort((a, b) => {
     if (!sortColumn.path) {
-      console.log("no sort path");
+      // console.log("no sort path");
       return 0;
     }
     const a0 = cast(nextDot(a, sortColumn.path));
@@ -20,6 +20,7 @@ const sortedThat = (arr, sortColumn, cast = String) =>
 
 const nextDot = (obj, dotNotes) => {
   // returns a value from an object using a string "written.in.dot.notation"
+  if (dotNotes === undefined) return ""; // handle blank columns
   if (dotNotes.length === 0) {
     return obj;
   }

@@ -1,11 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import range from "../../utils/range";
-// import Paginator from "./paginator";
 
-const Pagination = props => {
-  // re-usable
-  const { itemsCount, pageSize, onPageChange, currentPage } = props;
+const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
   const pagesCount = itemsCount / pageSize;
   const pages = range(1, pagesCount + 1);
   if (Math.ceil(pagesCount) === 1) return "";
