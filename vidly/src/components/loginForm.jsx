@@ -1,78 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { b64encode } from "../utils/madmurphy";
+import React from "react";
+import GenericForm from "./common/genericForm";
+import Joi from "@hapi/joi";
 
-const LoginForm = props => {
-  const { onSubmit } = props;
-  const [formInit, setFormInit] = useState(false);
+const inputfields = {
+  username: {
+    label: "Username",
+    rules: Joi.string()
+      .alphanum()
+      .min(5)
+      .max(30)
+      .required()
+      .label("Username")
+  },
+  password: {
+    label: "Password",
+    type: "password",
+    rules: Joi.string()
+      .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+      .min(7)
+      .required()
+      .label("Password")
+  }
+};
 
-  const [credentials, setCredentials] = useState({
-    username: "",
-    password: ""
-  });
-
-  useEffect(() => {
-    if (!formInit) {
-      setFormInit(true);
-      console.log("Login Form invoked ");
-    }
-  }, [formInit]);
-
-  const handleFormChange = ({ currentTarget: input }) => {
-    const clone = { ...credentials };
-    clone[input.name] = input.value;
-    setCredentials(clone);
+const LoginForm = ({ onSubmit: liftUp }) => {
+  const handleErrors = result => {
+    console.log(result.errors);
   };
-
-  const b64Submit = e => {
-    e.preventDefault();
-    if (
-      e.currentTarget.username.value.length < 1 ||
-      e.currentTarget.password.value.length < 3
-    )
-      return;
-    onSubmit({
-      username: e.currentTarget.username.value,
-      password: b64encode(e.currentTarget.password.value)
-    });
+  const onSubmit = result => {
+    result.errors.length > 0 ? handleErrors(result) : liftUp(result);
   };
-
-  const usernameInput = (
-    <input
-      id="username"
-      name="username"
-      className="form-control"
-      type="text"
-      value={credentials.username}
-      onChange={handleFormChange}
-    />
-  );
-
-  const passwordInput = (
-    <input
-      id="password"
-      name="password"
-      className="form-control"
-      type="password"
-      value={credentials.password}
-      onChange={handleFormChange}
-    />
-  );
-
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={b64Submit}>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          {usernameInput}
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Pasword</label>
-          {passwordInput}
-        </div>
-        <button className="btn btn-primary">Login</button>
-      </form>
-    </div>
+    <GenericForm
+      inputfields={inputfields}
+      onSubmit={onSubmit}
+      formtitle="Login"
+      buttonlabel="Sign In"
+    />
   );
 };
 
