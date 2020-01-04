@@ -2,7 +2,7 @@ import React from "react";
 
 const ListGroup = ({ group, onSelect, selectedGroup, textProp, keyProp }) => {
   const classes = "list-group-item";
-  const groupMembers = [...group];
+  // if (!group.map) return "";
   const listItem = (text, key, foo) => (
     <li
       key={key}
@@ -18,9 +18,7 @@ const ListGroup = ({ group, onSelect, selectedGroup, textProp, keyProp }) => {
   );
   return (
     <ul className="list-group">
-      {groupMembers.map(gm =>
-        listItem(gm[textProp], gm[keyProp], () => onSelect(gm))
-      )}
+      {group.map(gm => listItem(gm[textProp], gm[keyProp], () => onSelect(gm)))}
     </ul>
   );
 };

@@ -11,18 +11,12 @@ import Rentals from "./rentals";
 import NotFound from "./components/notFound";
 import NavBar from "./components/common/navbar";
 import LoginForm from "./components/loginForm";
+import RegisterForm from "./components/registerForm";
 import Chillout from "./components/common/chillout"; // ***chillout IMPORT****
+
 import hashCode from "./components/common/chillout/hash32";
 import { b64encode } from "./components/common/chillout/madmurphy";
 import "./App.css";
-
-// try loading from a frozen state :
-// const getMovies = () => [];
-// const getGenres = () => [];
-/* 
-paste the next line into devTools and Thaw.
-ewAiAHMAdABhAHQAZQAiADoAewAiAG0AbwB2AGkAZQBzACIAOgBbAHsAIgBfAGkAZAAiADoAIgA1AGIAMgAxAGMAYQAzAGUAZQBiADcAZgA2AGYAYgBjAGMAZAA0ADcAMQA4ADEAYQAiACwAIgB0AGkAdABsAGUAIgA6ACIAQQBpAHIAcABsAGEAbgBlACIALAAiAGcAZQBuAHIAZQAiADoAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQA0ACIALAAiAG4AYQBtAGUAIgA6ACIAQwBvAG0AZQBkAHkAIgB9ACwAIgBuAHUAbQBiAGUAcgBJAG4AUwB0AG8AYwBrACIAOgA3ACwAIgBkAGEAaQBsAHkAUgBlAG4AdABhAGwAUgBhAHQAZQAiADoAMwAuADUALAAiAGwAaQBrAGUAIgA6AHQAcgB1AGUAfQAsAHsAIgBfAGkAZAAiADoAIgA1AGIAMgAxAGMAYQAzAGUAZQBiADcAZgA2AGYAYgBjAGMAZAA0ADcAMQA4ADEANgAiACwAIgB0AGkAdABsAGUAIgA6ACIARABpAGUAIABIAGEAcgBkACIALAAiAGcAZQBuAHIAZQAiADoAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQA4ACIALAAiAG4AYQBtAGUAIgA6ACIAQQBjAHQAaQBvAG4AIgB9ACwAIgBuAHUAbQBiAGUAcgBJAG4AUwB0AG8AYwBrACIAOgA1ACwAIgBkAGEAaQBsAHkAUgBlAG4AdABhAGwAUgBhAHQAZQAiADoAMgAuADUALAAiAGwAaQBrAGUAIgA6AHQAcgB1AGUAfQAsAHsAIgBfAGkAZAAiADoAIgA1AGIAMgAxAGMAYQAzAGUAZQBiADcAZgA2AGYAYgBjAGMAZAA0ADcAMQA4ADEANwAiACwAIgB0AGkAdABsAGUAIgA6ACIARwBlAHQAIABPAHUAdAAiACwAIgBnAGUAbgByAGUAIgA6AHsAIgBfAGkAZAAiADoAIgA1AGIAMgAxAGMAYQAzAGUAZQBiADcAZgA2AGYAYgBjAGMAZAA0ADcAMQA4ADIAMAAiACwAIgBuAGEAbQBlACIAOgAiAFQAaAByAGkAbABsAGUAcgAiAH0ALAAiAG4AdQBtAGIAZQByAEkAbgBTAHQAbwBjAGsAIgA6ADgALAAiAGQAYQBpAGwAeQBSAGUAbgB0AGEAbABSAGEAdABlACIAOgAzAC4ANQB9ACwAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQBlACIALAAiAHQAaQB0AGwAZQAiADoAIgBHAG8AbgBlACAARwBpAHIAbAAiACwAIgBnAGUAbgByAGUAIgA6AHsAIgBfAGkAZAAiADoAIgA1AGIAMgAxAGMAYQAzAGUAZQBiADcAZgA2AGYAYgBjAGMAZAA0ADcAMQA4ADIAMAAiACwAIgBuAGEAbQBlACIAOgAiAFQAaAByAGkAbABsAGUAcgAiAH0ALAAiAG4AdQBtAGIAZQByAEkAbgBTAHQAbwBjAGsAIgA6ADcALAAiAGQAYQBpAGwAeQBSAGUAbgB0AGEAbABSAGEAdABlACIAOgA0AC4ANQB9ACwAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQA1ACIALAAiAHQAaQB0AGwAZQAiADoAIgBUAGUAcgBtAGkAbgBhAHQAbwByACIALAAiAGcAZQBuAHIAZQAiADoAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQA4ACIALAAiAG4AYQBtAGUAIgA6ACIAQQBjAHQAaQBvAG4AIgB9ACwAIgBuAHUAbQBiAGUAcgBJAG4AUwB0AG8AYwBrACIAOgA2ACwAIgBkAGEAaQBsAHkAUgBlAG4AdABhAGwAUgBhAHQAZQAiADoAMgAuADUALAAiAHAAdQBiAGwAaQBzAGgARABhAHQAZQAiADoAIgAyADAAMQA4AC0AMAAxAC0AMAAzAFQAMQA5ADoAMAA0ADoAMgA4AC4AOAAwADkAWgAiACwAIgBsAGkAawBlACIAOgB0AHIAdQBlAH0ALAB7ACIAXwBpAGQAIgA6ACIANQBiADIAMQBjAGEAMwBlAGUAYgA3AGYANgBmAGIAYwBjAGQANAA3ADEAOAAxADkAIgAsACIAdABpAHQAbABlACIAOgAiAFQAcgBpAHAAIAB0AG8AIABJAHQAYQBsAHkAIgAsACIAZwBlAG4AcgBlACIAOgB7ACIAXwBpAGQAIgA6ACIANQBiADIAMQBjAGEAMwBlAGUAYgA3AGYANgBmAGIAYwBjAGQANAA3ADEAOAAxADQAIgAsACIAbgBhAG0AZQAiADoAIgBDAG8AbQBlAGQAeQAiAH0ALAAiAG4AdQBtAGIAZQByAEkAbgBTAHQAbwBjAGsAIgA6ADcALAAiAGQAYQBpAGwAeQBSAGUAbgB0AGEAbABSAGEAdABlACIAOgAzAC4ANQB9ACwAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQBmACIALAAiAHQAaQB0AGwAZQAiADoAIgBUAGgAZQAgAFMAaQB4AHQAaAAgAFMAZQBuAHMAZQAiACwAIgBnAGUAbgByAGUAIgA6AHsAIgBfAGkAZAAiADoAIgA1AGIAMgAxAGMAYQAzAGUAZQBiADcAZgA2AGYAYgBjAGMAZAA0ADcAMQA4ADIAMAAiACwAIgBuAGEAbQBlACIAOgAiAFQAaAByAGkAbABsAGUAcgAiAH0ALAAiAG4AdQBtAGIAZQByAEkAbgBTAHQAbwBjAGsAIgA6ADQALAAiAGQAYQBpAGwAeQBSAGUAbgB0AGEAbABSAGEAdABlACIAOgAzAC4ANQAsACIAbABpAGsAZQAiADoAdAByAHUAZQB9ACwAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMgAxACIALAAiAHQAaQB0AGwAZQAiADoAIgBUAGgAZQAgAEEAdgBlAG4AZwBlAHIAcwAiACwAIgBnAGUAbgByAGUAIgA6AHsAIgBfAGkAZAAiADoAIgA1AGIAMgAxAGMAYQAzAGUAZQBiADcAZgA2AGYAYgBjAGMAZAA0ADcAMQA4ADEAOAAiACwAIgBuAGEAbQBlACIAOgAiAEEAYwB0AGkAbwBuACIAfQAsACIAbgB1AG0AYgBlAHIASQBuAFMAdABvAGMAawAiADoANwAsACIAZABhAGkAbAB5AFIAZQBuAHQAYQBsAFIAYQB0AGUAIgA6ADMALgA1ACwAIgBsAGkAawBlACIAOgB0AHIAdQBlAH0ALAB7ACIAXwBpAGQAIgA6ACIANQBiADIAMQBjAGEAMwBlAGUAYgA3AGYANgBmAGIAYwBjAGQANAA3ADEAOAAxAGIAIgAsACIAdABpAHQAbABlACIAOgAiAFcAZQBkAGQAaQBuAGcAIABDAHIAYQBzAGgAZQByAHMAIgAsACIAZwBlAG4AcgBlACIAOgB7ACIAXwBpAGQAIgA6ACIANQBiADIAMQBjAGEAMwBlAGUAYgA3AGYANgBmAGIAYwBjAGQANAA3ADEAOAAxADQAIgAsACIAbgBhAG0AZQAiADoAIgBDAG8AbQBlAGQAeQAiAH0ALAAiAG4AdQBtAGIAZQByAEkAbgBTAHQAbwBjAGsAIgA6ADcALAAiAGQAYQBpAGwAeQBSAGUAbgB0AGEAbABSAGEAdABlACIAOgAzAC4ANQB9AF0ALAAiAGcAZQBuAHIAZQBzACIAOgBbAHsAIgBuAGEAbQBlACIAOgAiAEEAbABsACAARwBlAG4AcgBlAHMAIgAsACIAXwBpAGQAIgA6ACIAIgB9ACwAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQA4ACIALAAiAG4AYQBtAGUAIgA6ACIAQQBjAHQAaQBvAG4AIgB9ACwAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMQA0ACIALAAiAG4AYQBtAGUAIgA6ACIAQwBvAG0AZQBkAHkAIgB9ACwAewAiAF8AaQBkACIAOgAiADUAYgAyADEAYwBhADMAZQBlAGIANwBmADYAZgBiAGMAYwBkADQANwAxADgAMgAwACIALAAiAG4AYQBtAGUAIgA6ACIAVABoAHIAaQBsAGwAZQByACIAfQBdACwAIgBjAHUAcgByAGUAbgB0AFAAYQBnAGUAIgA6ADEALAAiAHMAZQBsAGUAYwB0AGUAZABHAHIAbwB1AHAAIgA6ACIAVABoAHIAaQBsAGwAZQByACIALAAiAHMAbwByAHQAQwBvAGwAdQBtAG4AIgA6AHsAIgBwAGEAdABoACIAOgAiAHQAaQB0AGwAZQAiACwAIgBvAHIAZABlAHIAIgA6ACIAYQBzAGMAIgB9ACwAIgBhAGMAYwBvAHUAbgB0ACIAOgB7ACIAdQBzAGUAcgBuAGEAbQBlACIAOgAiACIALAAiAHAAYQBzAHMAdwBvAHIAZAAiADoAIgAiAH0AfQAsACIAaABpAHMAdABvAHIAeQAiADoAewAiAGwAZQBuAGcAdABoACIAOgAyADgALAAiAGEAYwB0AGkAbwBuACIAOgAiAFAAVQBTAEgAIgAsACIAbABvAGMAYQB0AGkAbwBuACIAOgB7ACIAcABhAHQAaABuAGEAbQBlACIAOgAiAC8AZABlAHYAVABvAG8AbABzACIALAAiAHMAZQBhAHIAYwBoACIAOgAiACIALAAiAGgAYQBzAGgAIgA6ACIAIgAsACIAcwB0AGEAdABlACIAOgBuAHUAbABsACwAIgBrAGUAeQAiADoAIgB1AGYAZwBiAGUAZgAiAH0AfQB9AA
-*/
 
 function App() {
   const [appInit, setAppInit] = useState(false); // the front door
@@ -34,22 +28,14 @@ function App() {
     currentPage: 1,
     selectedGroup: "",
     sortColumn: { path: "title", order: "asc" },
-    account: { username: "", password: "" }
+    account: { username: "", password: "" },
+    signup: { email: "", password: "", name: "" }
   });
 
   // init
   useEffect(() => {
     if (!appInit) {
       setAppInit(true); // shut the front door
-      [
-        "**** CONSOLE-ADORE 64 BASIC W3 ****\n",
-        "64K RAM SYSTEM 38911 BASIC BYTES FREE\n",
-        "READY.\n",
-        'LOAD "*", 8, 1\n',
-        "LOADING...\n",
-        "READY.\n",
-        "RUN"
-      ].map(c64 => console.log(c64));
       const cloned = { ...appState };
       cloned.movies = getMovies();
       console.log("GET movies => OK");
@@ -66,6 +52,7 @@ function App() {
     { title: "Customers", path: "/customers", classes: "" },
     { title: "Rentals", path: "/rentals", classes: "" },
     { title: "Login", path: "/login", classes: "" },
+    { title: "Register", path: "/register", classes: "" },
     { title: "Tools", path: "/devTools", classes: "" }
   ];
 
@@ -130,9 +117,9 @@ function App() {
   const moviesComponent = () => {
     return (
       <Movies
-        movieList={appState.movies}
-        genreList={appState.genres}
-        sortColumn={appState.sortColumn}
+        movieList={[...appState.movies]}
+        genreList={[...appState.genres]}
+        sortColumn={{ ...appState.sortColumn }}
         onDelete={handleDelete}
         onSort={handleSort}
         likeMovie={handleLike}
@@ -140,6 +127,7 @@ function App() {
         onPageChange={handlePageChange}
         onGenreSelect={handleGenreSelect}
         selectedGroup={appState.selectedGroup}
+        onNewMovie={() => history.push("/movies/new")}
       />
     );
   };
@@ -152,12 +140,31 @@ function App() {
       />
     );
   };
+  const handleRegisteNewUser = ({ data: newUser, errors }) => {
+    debugger;
+    const cloned = { ...appState };
+    const { username, password, name } = newUser;
+    cloned.signup.email = username;
+    cloned.signup.password = hashCode(b64encode(password));
+    cloned.signup.name = name;
+    setAppState(cloned);
+    if (Object.keys(errors) > 0) {
+      history.push("/register");
+      return;
+    }
+    console.log("form submitted");
+    console.log("thanks for registering! please sign in to continue.");
+    history.push("/login");
+  };
+
+  const registerComponent = () => {
+    return <RegisterForm onSubmit={handleRegisteNewUser} />;
+  };
 
   /* devTools */
 
   // ***chillout HANDLER****
   const handleThawState = ({ state: newState, history: newHist }) => {
-    console.log(newHist);
     setAppState(newState);
   };
 
@@ -168,7 +175,65 @@ function App() {
       onSubmit={handleThawState}
     />
   );
+  // const getGenreName = id =>
+  //   getGenres().filter(x => x._id === id)[0].name || "not found";
+  const crudCreate = (key, data) => {
+    const cloned = { ...appState };
+    const neo = [...cloned[key]];
+    data._id += Date.now().toString();
+    neo.push(data);
+    cloned[key] = neo;
+    setAppState(cloned);
+    history.replace(`/${key}`);
+  };
+  const crudUpdate = (key, data) => {
+    const cloned = { ...appState };
+    const morpheus = [...cloned[key]];
+    const match = morpheus.filter(record => record._id === data._id)[0];
+    const matchID = morpheus.indexOf(match);
+    const a = morpheus.slice(0, matchID);
+    const b = morpheus.slice(matchID + 1, morpheus.length);
+    cloned[key] = [...a, data, ...b];
+    setAppState(cloned);
+    history.replace(`/${key}`);
+  };
 
+  const customFilter = (newData, genres) => {
+    // debugger;
+    const newRecord = {};
+    const getGenreID = name => {
+      const genreIsListed =
+        genres.filter(genre => genre.name === name)[0] || null;
+      if (!genreIsListed) return "?";
+      return genreIsListed._id;
+    };
+    Object.keys(newData).forEach(field => (newRecord[field] = newData[field]));
+    newData.genreID &&
+      (newRecord.genre = {
+        _id: getGenreID(newData.genreID),
+        name: newData.genreID
+      });
+    return newRecord;
+  };
+
+  const handleCRUD = crud => {
+    console.log("App.js > handleCRUD");
+    const { data: crudDATA, genres, errors } = crud;
+    const newRecord = customFilter(crudDATA, genres);
+    const cloned = { ...appState };
+    const oldRecord = cloned.movies.filter(
+      movie => movie._id.trim() === newRecord._id.trim()
+    )[0];
+    !oldRecord
+      ? crudCreate("movies", newRecord)
+      : crudUpdate("movies", newRecord);
+    console.log("CRUD-ed", newRecord.title);
+    if (errors) console.log(errors);
+  };
+
+  const movieFormComponent = props => (
+    <MovieForm onSubmit={handleCRUD} {...props} />
+  );
   // output
   return (
     <React.Fragment>
@@ -176,8 +241,9 @@ function App() {
       <main className="container">
         <Switch>
           <Route path="/login" exact component={loginComponent} />
+          <Route path="/register" component={registerComponent} />
           <Route path="/movies" exact component={moviesComponent} />
-          <Route path="/movies/:id" component={MovieForm} />
+          <Route path="/movies/:id" component={movieFormComponent} />
           <Route path="/customers" component={Customers} />
           <Route path="/rentals" component={Rentals} />
           <Route path="/not-found" component={NotFound} />

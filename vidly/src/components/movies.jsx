@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import ListGroup from "./common/listgroup";
 import Pagination from "./common/pagination";
 import paginate from "../utils/paginate";
 import MoviesTable from "./moviesTable";
 import sortedThat from "../utils/sortedThat";
+import SearchBar from "./searchBar";
 
 const Movies = props => {
   const {
@@ -14,10 +15,12 @@ const Movies = props => {
     onSort,
     likeMovie,
     onPageChange,
+    onNewMovie,
     currentPage,
     onGenreSelect,
     selectedGroup
   } = props;
+  const [searchState, setSearchState] = useState({ search: "", filtered: [] });
   if (movieList.length === 0) {
     return <p>There are no movies in the database.</p>;
   }
@@ -33,21 +36,46 @@ const Movies = props => {
     return { totalCount: filtered.length, data: movies };
   };
   const { totalCount, data } = getPagedData();
+  const renderNewMovieButton = (
+    <button
+      style={{ borderRadius: "5px" }}
+      className="btn btn-danger"
+      onClick={onNewMovie}
+    >
+      New Movie
+    </button>
+  );
+  const onSearch = ({ currentTarget: input }) => {
+    const clonedMovies = [...movieList];
+    const clonedSearch = { ...searchState };
+    clonedSearch.search = input.value;
+    const filtered = clonedMovies.filter(movie =>
+      movie.title.toLowerCase().includes(clonedSearch.search.toLowerCase())
+    );
+    clonedSearch.filtered = filtered;
+    setSearchState(clonedSearch);
+  };
   return (
     <React.Fragment>
       <div className="row">
         <div className="col-2">
           <ListGroup
             title="All Genres"
-            group={genreList}
+            group={[...genreList]}
             onSelect={onGenreSelect}
             selectedGroup={selectedGroup}
           />
         </div>
         <div className="col">
+          {renderNewMovieButton}
           <p>Showing {totalCount} movies in the database.</p>
+          <SearchBar
+            onChange={onSearch}
+            value={searchState.search}
+            placeholder="search"
+          />
           <MoviesTable
-            movies={data}
+            movies={searchState.search.length > 0 ? searchState.filtered : data}
             onDelete={movieId => onDelete(movieId)}
             onLike={movie => likeMovie(movie)}
             onSort={onSort}
